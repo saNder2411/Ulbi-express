@@ -1,0 +1,20 @@
+{
+  "name": "02_express",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saNder2411/Ulbi-express.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saNder2411/Ulbi-express/issues"
+  },
+  "homepage": "https://github.com/saNder2411/Ulbi-express#readme"
+}
