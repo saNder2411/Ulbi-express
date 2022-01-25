@@ -21,10 +21,15 @@
 	},
 	"homepage": "https://github.com/saNder2411/Ulbi-express#readme",
 	"dependencies": {
+		"class-transformer": "^0.5.1",
+		"class-validator": "^0.13.2",
 		"dotenv": "^14.2.0",
 		"express": "^4.17.2",
 		"express-fileupload": "^1.2.1",
+		"inversify": "^6.0.1",
 		"mongoose": "^6.1.7",
+		"reflect-metadata": "^0.1.13",
+		"tslog": "^3.3.1",
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {

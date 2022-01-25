@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema } from 'mongoose'
 
 export interface Post {
 	_id: string
@@ -8,13 +8,9 @@ export interface Post {
 	image: string
 }
 
-export type IPostDTO = Omit<Post, '_id' | 'image'>
-
-const PostSchema = new Schema<Post>({
+export const PostSchema = new Schema<Post>({
 	author: { type: String, required: true },
 	title: { type: String, required: true },
 	content: { type: String, required: true },
 	image: { type: String },
 })
-
-export const Post = model('Post', PostSchema)

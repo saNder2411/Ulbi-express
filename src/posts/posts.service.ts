@@ -1,15 +1,28 @@
-import { UploadedFile } from 'express-fileupload'
-import { IPostDTO, Post } from './post.entity'
-import { fileService } from '../common/file.service'
+import 'reflect-metadata'
 
-export class PostService {
-	async create(newPost: IPostDTO, file?: UploadedFile) {
-		const fileName = await fileService.save(file)
-		return await Post.create({ ...newPost, image: fileName })
+import { UploadedFile } from 'express-fileupload'
+import { inject, injectable } from 'inversify'
+
+import { IFileService } from '../common/file.service.interface'
+import { TYPES } from '../types'
+import { PostDTO } from './dto/post.dto'
+import { Post } from './post.entity'
+import { IPostsRepository } from './post.repository.interface'
+import { IPostsService } from './posts.service.interface'
+
+@injectable()
+export class PostsService implements IPostsService {
+	constructor(
+		@inject(TYPES.IFileService) private fileService: IFileService,
+		@inject(TYPES.IPostsRepository) private postsRepository: IPostsRepository
+	) {}
+	async create(newPost: PostDTO, file?: UploadedFile) {
+		const fileName = await this.fileService.save(file)
+		return await this.postsRepository.create(newPost, fileName)
 	}
 
 	async getAll() {
-		return await Post.find()
+		return await this.postsRepository.getAll()
 	}
 
 	async getOne(_id?: string) {
@@ -17,7 +30,7 @@ export class PostService {
 			throw new Error('Id not found')
 		}
 
-		return await Post.findById(_id)
+		return await this.postsRepository.getOne(_id)
 	}
 
 	async update(post: Post) {
@@ -25,7 +38,7 @@ export class PostService {
 			throw new Error('Id not found')
 		}
 
-		return await Post.findByIdAndUpdate(post._id, post, { new: true })
+		return await this.postsRepository.update(post)
 	}
 
 	async delete(_id?: string) {
@@ -33,12 +46,10 @@ export class PostService {
 			throw new Error('Id not found')
 		}
 
-		const post = await Post.findById(_id)
+		const post = await this.postsRepository.getOne(_id)
 
-		await fileService.remove(post?.image)
+		await this.fileService.remove(post?.image)
 
-		return await Post.findByIdAndDelete(_id)
+		return await this.postsRepository.delete(_id)
 	}
 }
-
-export const postService = new PostService()
